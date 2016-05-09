@@ -187,16 +187,16 @@ app.get('/blink1/blink', function(req, res) {
 // respond with "Hello World!" on the homepage
 app.get('/', function(req, res) {
     res.send("<html>" +
-        "<h2> Welcome to blink1-server</h2> \n" +
+        "<h2> Welcome to blink1-server</h2>" +
         "<p>" +
-        "Supported URIs: <ul>\n" +
+        "Supported URIs: <ul>" +
         "<li>   <code> /blink1 </code> " +
         " -- status info</li>" +
         "<li>   <code> /blink1/fadeToRGB?rgb=%23FF00FF&time=1.5&ledn=2 </code> " +
         "-- fade to a RGB color over time for led</li>" +
         "<li>   <code> /blink1/morse?message=hi&time=.3 </code> " +
         "-- send a morse code message</li>" +
-        "</ul></p>\n" +
+        "</ul></p>" +
         "When starting server, argument specified is port to run on, e.g.:" +
         "<code> blink1-server 8080 </code>" +
         "</html>");
