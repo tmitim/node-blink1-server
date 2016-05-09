@@ -15,6 +15,10 @@ var express = require('express');
 var app = express();
 app.set('json spaces', 4);
 
+// morse code things
+var morse = require('morse');
+var MORSE_BLINK_TIME = 400;
+
 var port = 8080;
 
 var devices = Blink1.devices(); // returns array of serial numbers
@@ -76,9 +80,50 @@ app.get('/blink1', function(req, res) {
         lastLedn: lastLedn,
         lastRepeats: lastRepeats,
         cmd: "info",
+        code: morse.encode('Hello, world'),
         status: "success"
     };
     res.json( response );
+});
+
+var intervalBlink = function(time) {
+    var color = parsecolor("#eeeeee");
+    var rgb = color.rgb;
+    blink1Blink( true, 1, time/2, rgb[0], rgb[1], rgb[2], 0);
+};
+
+var letterInterval = function(letter) {
+    return (letter === "-") ? 2 : (letter === ".") ? 1 : 0;
+};
+
+app.get('/blink1/morse', function(req, res) {
+    var message = req.query.message || "sos";
+    var morseCode = morse.encode(message);
+    var blinkTime = new Number(req.query.time || MORSE_BLINK_TIME);
+    var time = 0;
+    intervalBlink(letterInterval(morseCode[0]) * blinkTime);
+    for (var i = 1, len = morseCode.length; i < len; i++) {
+        time += letterInterval((morseCode[i-1])) * blinkTime  || blinkTime;
+
+        if (letterInterval(morseCode[i]) === 1) {
+            setTimeout(function() {
+                intervalBlink(blinkTime);
+            }, time);
+        } else if (letterInterval(morseCode[i]) === 2 ) {
+            setTimeout(function() {
+                intervalBlink(blinkTime * 2);
+            }, time);
+        }
+    }
+
+    var response = {
+        code: morseCode,
+        message: message,
+        time: blinkTime,
+        blink1Connected: blink1 !== null,
+        blink1Serials: devices,
+    }
+    res.json(response);
 });
 
 app.get('/blink1/fadeToRGB', function(req, res) {

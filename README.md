@@ -32,6 +32,9 @@ npm start 8754
     - `time` -- fade & blink time in seconds (default: 0.1)
     - `ledn` -- LED to control (0=both, 1=top, 2=bottom; default: 0)
     - `repeats` -- number of times to blink (default: 3)
+- `/blink1/morse` -- blink morse code, query args:
+    - `time` -- fade & blink time in seconds (default: 0.3)
+    - `message` -- message to encode (default: "sos")
 
 ### Examples:
 ```
@@ -61,5 +64,15 @@ $ curl  'http://localhost:8754/blink1/fadeToRGB?rgb=%230000ff&time=2.5&ledn=2'
     "lastRepeats": 0,
     "cmd": "fadeToRGB",
     "status": "success"
+}
+$ curl 'http://localhost:8754/blink1/morse?time=300&message=hello'
+{
+    "code": ".... . .-.. .-.. ---",
+    "message": "hello",
+    "time": 300,
+    "blink1Connected": true,
+    "blink1Serials": [
+        "200030A8"
+    ]
 }
 ```

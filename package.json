@@ -27,6 +27,7 @@
         "express": "^4.13.3",
         "node-blink1": "^0.2.1",
         "node-hid": "^0.5.0",
-        "parse-color": "^1.0.0"
+        "parse-color": "^1.0.0",
+        "morse": "^0.1.0"
     }
 }
