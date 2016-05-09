@@ -17,7 +17,7 @@ app.set('json spaces', 4);
 
 // morse code things
 var morse = require('morse');
-var MORSE_BLINK_TIME = 400;
+var MORSE_BLINK_TIME = .4;
 
 var port = 8080;
 
@@ -99,7 +99,7 @@ var letterInterval = function(letter) {
 app.get('/blink1/morse', function(req, res) {
     var message = req.query.message || "sos";
     var morseCode = morse.encode(message);
-    var blinkTime = new Number(req.query.time || MORSE_BLINK_TIME);
+    var blinkTime = new Number(req.query.time || MORSE_BLINK_TIME) * 1000;
     var time = 0;
     intervalBlink(letterInterval(morseCode[0]) * blinkTime);
     for (var i = 1, len = morseCode.length; i < len; i++) {
@@ -119,7 +119,7 @@ app.get('/blink1/morse', function(req, res) {
     var response = {
         code: morseCode,
         message: message,
-        time: blinkTime,
+        time: blinkTime / 1000,
         blink1Connected: blink1 !== null,
         blink1Serials: devices,
     }
@@ -191,12 +191,14 @@ app.get('/', function(req, res) {
         "<p>" +
         "Supported URIs: <ul>\n" +
         "<li>   <code> /blink1 </code> " +
-        " -- status info\n" +
+        " -- status info</li>" +
         "<li>   <code> /blink1/fadeToRGB?rgb=%23FF00FF&time=1.5&ledn=2 </code> " +
-        "-- fade to a RGB color over time for led\n" +
+        "-- fade to a RGB color over time for led</li>" +
+        "<li>   <code> /blink1/morse?message=hi&time=.3 </code> " +
+        "-- send a morse code message</li>" +
         "</ul></p>\n" +
         "When starting server, argument specified is port to run on, e.g.:" +
-        "<code> blink1-server 8080 </code>\n" +
+        "<code> blink1-server 8080 </code>" +
         "</html>");
 });
 
