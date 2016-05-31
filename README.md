@@ -35,6 +35,10 @@ npm start 8754
 - `/blink1/morse` -- blink morse code, query args:
     - `time` -- fade & blink time in seconds (default: 0.3)
     - `message` -- message to encode (default: "sos")
+- `/blink1/pattern` -- blink a pattern of colors, query args:
+    - `rgb` -- hex color codes separated by a comma (,) (e.g. "`#ff00ff`") [required]
+    - `time` -- blink time in seconds (default: 0.1)
+    - `repeats` -- number of times to blink pattern (default: 3)
 
 ### Examples:
 ```
@@ -74,5 +78,22 @@ $ curl 'http://localhost:8754/blink1/morse?time=300&message=hello'
     "blink1Serials": [
         "200030A8"
     ]
+
+
+$ curl  'http://localhost:8754/blink1/pattern?rgb=%23ff0000,%23ffffff,%230000ff&time=.2&repeats=8'
+{
+    "blink1Connected": true,
+    "blink1Serials": [
+        "200026C1"
+    ],
+    "time": 0.2,
+    "colors": [
+        "#ff0000",
+        "#ffffff",
+        "#0000ff"
+    ],
+    "repeats": 8,
+    "cmd": "pattern",
+    "status": "success"
 }
 ```
